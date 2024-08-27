@@ -1,0 +1,19 @@
+<div class="wrapper wrap full-center">
+    <div class="quotation-number">MOT-{{ quotation?.quotationNumber }}</div>
+
+    <label class="label">Policy Owner</label>
+    <div class="value">{{ quotation?.policyOwner }}</div>
+
+    <label class="label">Car Make</label>
+    <div class="value">{{ quotation?.carMake }}</div>
+
+    <label class="label">Year of Make</label>
+    <div class="value">{{ quotation?.carYearOfMake }}</div>
+
+    <div>
+        {{ quotation?.quotationStatus?.toUpperCase() == "DRAFT" ? "🔴" : "🟢" }}
+        {{ quotation?.quotationStatus }}
+    </div>
+
+    <div class="value">{{ quotation?.creationDate | dateFormat }}</div>
+</div>

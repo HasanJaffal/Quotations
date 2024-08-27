@@ -1,0 +1,72 @@
+<div class="column full-center">
+    <div
+        class="ui-controls"
+        *ngIf="!loading && quotations.length > 0 && !errorMessage"
+    >
+        <p-dropdown
+            [options]="sortingOptions"
+            [(ngModel)]="selectedSortingOption"
+            [style]="{ width: '100%' }"
+            (onChange)="onSortChange($event)"
+            placeholder="Sort by"
+        ></p-dropdown>
+
+        <div class="search-container">
+            <input
+                class="search"
+                type="text"
+                pInputText
+                [(ngModel)]="fetchParams.searchQuery"
+                placeholder="Search..."
+                (keydown.enter)="onSearch()"
+            />
+            <p-button (onClick)="onSearch()">
+                <span class="pi pi-search"></span>
+            </p-button>
+        </div>
+    </div>
+
+    <div>
+        <p *ngIf="loading">
+            Loading
+            <i class="pi pi-spin pi-spinner" style="font-size: 1.5rem"></i>
+        </p>
+
+        <!-- Display no data found message -->
+        <div
+            *ngIf="!loading && quotations.length === 0 && !errorMessage"
+            class="no-data"
+        >
+            <p>No quotations found.</p>
+            <button pButton type="button" (click)="refresh()">Refresh</button>
+        </div>
+
+        <!-- Display error message -->
+        <div *ngIf="!loading && errorMessage" class="no-data">
+            <p>{{ errorMessage }}</p>
+            <button pButton type="button" (click)="refresh()">Refresh</button>
+        </div>
+
+        <!-- Display quotations when available -->
+        <div *ngIf="!loading && quotations.length > 0">
+            <div class="row wrap full-center quotations-wrapper">
+                <app-quotation
+                    *ngFor="let quotation of quotations"
+                    [quotation]="quotation"
+                ></app-quotation>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Display paginator only if there are quotations -->
+<div *ngIf="!loading && quotations.length > 0">
+    <p-paginator
+        [rows]="fetchParams.pageSize"
+        [totalRecords]="totalQuotations"
+        [rowsPerPageOptions]="rowsPerPageOptions"
+        (onPageChange)="onPageChange($event)"
+        [first]="(fetchParams.pageNumber - 1) * fetchParams.pageSize"
+        #paginator
+    ></p-paginator>
+</div>
